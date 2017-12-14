@@ -1,0 +1,9 @@
+.SideDrawerToggle{
+    display: block;
+}
+
+@media (min-width: 500px) {
+    .SideDrawerToggle{
+        display: none
+    }
+}

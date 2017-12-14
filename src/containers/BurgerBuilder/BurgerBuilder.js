@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import Aux from '../../hoc/Auxiliary';
+import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -19,8 +21,21 @@ class BurgerBuilder extends Component {
             cheese: 0,
             meat: 0
         },
-        totalPrice: 4
+        totalPrice: 4,
+        canOrder: false,
+        ordering: false
     };
+
+    checkOrderState(ingredients) {
+        const sum = Object.keys(ingredients)
+            .map(igKey => {
+                return ingredients[igKey];
+            }).reduce((sum, el) => {
+                return sum + el;
+            }, 0);
+
+        this.setState({canOrder: sum > 0});
+    }
 
     addIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
@@ -35,18 +50,19 @@ class BurgerBuilder extends Component {
         this.setState({
             totalPrice: newPrice,
             ingredients: updatedIngredients
-        })
+        });
+        this.checkOrderState(updatedIngredients);
     };
 
     removeIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
-        let updatedCount = oldCount
+        let updatedCount = oldCount;
         const priceSubtraction = INGREDIENT_PRICES[type];
         const oldPrice = this.state.totalPrice;
-        let newPrice = oldPrice ;
+        let newPrice = oldPrice;
 
-        if(oldCount > 0){
-            updatedCount = oldCount - 1
+        if (oldCount > 0) {
+            updatedCount = oldCount - 1;
             newPrice = oldPrice - priceSubtraction;
         }
 
@@ -57,7 +73,20 @@ class BurgerBuilder extends Component {
         this.setState({
             totalPrice: newPrice,
             ingredients: updatedIngredients
-        })
+        });
+        this.checkOrderState(updatedIngredients)
+    };
+
+    orderHandler = () => {
+        this.setState({ordering: true});
+    };
+
+    orderCancelHandler = () => {
+        this.setState({ordering: false});
+    };
+
+    orderCheckoutHandler = () => {
+        alert('Awesome! you checked out');
     };
 
     render() {
@@ -65,17 +94,30 @@ class BurgerBuilder extends Component {
             ...this.state.ingredients
         };
 
-        for(let key in disabledInfo){
+        for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
 
         return (
             <Aux>
+                {this.state.ordering}
+                <Modal
+                    show={this.state.ordering}
+                    modalClosed={this.orderCancelHandler}>
+                    <OrderSummary ingredients={this.state.ingredients}
+                                  totalPrice={this.state.totalPrice}
+                                  checkoutCancelled={this.orderCancelHandler}
+                                  checkOut={this.orderCheckoutHandler}/>
+                </Modal>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls
-                ingredientAdded={this.addIngredientHandler}
-                ingredientRemoved={this.removeIngredientHandler}
-                disabled={disabledInfo}/>
+                    ingredientAdded={this.addIngredientHandler}
+                    ingredientRemoved={this.removeIngredientHandler}
+                    disabled={disabledInfo}
+                    canOrder={this.state.canOrder}
+                    price={this.state.totalPrice}
+                    showSummary={this.orderHandler}/>
+
             </Aux>
         );
     }

@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ac1b2483-6f96-4a4f-8de1-ca2b4f9bb8bc" name="Default" comment="Added auth functionality and integrated project with firebass. Added Redux.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/config/webpack.config.prod.js" afterPath="$PROJECT_DIR$/config/webpack.config.prod.js" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
-      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change beforePath="$PROJECT_DIR$/src/components/Burger/BuildControls/BuildControls.js" afterPath="$PROJECT_DIR$/src/components/Burger/BuildControls/BuildControls.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/Order/CheckoutSummary/CheckoutSummary.css" afterPath="$PROJECT_DIR$/src/components/Order/CheckoutSummary/CheckoutSummary.css" />
-      <change beforePath="$PROJECT_DIR$/src/components/UI/Navigation/NavigationItems/NavigationItems.js" afterPath="$PROJECT_DIR$/src/components/UI/Navigation/NavigationItems/NavigationItems.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/UI/Navigation/SideDrawer/SideDrawer.js" afterPath="$PROJECT_DIR$/src/components/UI/Navigation/SideDrawer/SideDrawer.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/UI/Navigation/Toolbar/Toolbar.js" afterPath="$PROJECT_DIR$/src/components/UI/Navigation/Toolbar/Toolbar.js" />
-      <change beforePath="$PROJECT_DIR$/src/containers/App.js" afterPath="$PROJECT_DIR$/src/containers/App.js" />
-      <change beforePath="$PROJECT_DIR$/src/containers/App.test.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/containers/BurgerBuilder/BurgerBuilder.js" afterPath="$PROJECT_DIR$/src/containers/BurgerBuilder/BurgerBuilder.js" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Checkout/Checkout.js" afterPath="$PROJECT_DIR$/src/containers/Checkout/Checkout.js" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Checkout/ContactData/ContactData.js" afterPath="$PROJECT_DIR$/src/containers/Checkout/ContactData/ContactData.js" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Orders/OrderItem/OrderItem.js" afterPath="$PROJECT_DIR$/src/containers/Orders/OrderItem/OrderItem.js" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Orders/Orders.js" afterPath="$PROJECT_DIR$/src/containers/Orders/Orders.js" />
-      <change beforePath="$PROJECT_DIR$/src/hoc/Layout/Layout.js" afterPath="$PROJECT_DIR$/src/hoc/Layout/Layout.js" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
-    </list>
+    <list default="true" id="ac1b2483-6f96-4a4f-8de1-ca2b4f9bb8bc" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -351,12 +332,20 @@
       <workItem from="1519929909677" duration="14236000" />
       <workItem from="1521551977741" duration="52000" />
       <workItem from="1521552144025" duration="11628000" />
-      <workItem from="1521756662178" duration="68523000" />
+      <workItem from="1521756662178" duration="68670000" />
     </task>
+    <task id="LOCAL-00001" summary="Added auth functionality and integrated project with firebass. Added Redux.">
+      <created>1522864188155</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1522864188155</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="248886000" />
+    <option name="totallyTimeSpent" value="249033000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">

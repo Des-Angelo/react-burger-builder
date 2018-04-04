@@ -3,10 +3,13 @@ import NavItem from './NavItem/NavItem';
 
 import styles from './NavigationItems.css';
 
-const navigationItems = () => (
+const navigationItems = (props) => (
     <ul className={styles.NavigationItems}>
         <NavItem destination="/">Burger Builder</NavItem>
-        <NavItem destination="/my-orders">My Orders</NavItem>
+        {props.isAuthenticated ? <NavItem destination="/my-orders">My Orders</NavItem> : null}
+        {props.isAuthenticated
+            ? <NavItem destination="/logout">Logout</NavItem>
+            : <NavItem destination="/auth">Profile</NavItem>}
     </ul>
 );
 

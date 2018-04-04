@@ -14,7 +14,7 @@ const toolbar = (props) => (
             <Logo/>
         </div>
         <nav className={styles["hides-on-large"]}>
-            <Nav/>
+            <Nav isAuthenticated={props.isAuth} />
         </nav>
     </header>
 );

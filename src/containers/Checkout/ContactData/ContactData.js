@@ -5,6 +5,11 @@ import styles from './ContactData.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import withErrorHandler from './../../../hoc/WithErrorHandler/WithErrorHandler';
+import * as actions from '../../../store/actions/index';
+import {connect} from 'react-redux';
+
+import {updateObject, checkValidity, generateValidityMessage} from '../../../shared/utility';
 
 class ContactData extends Component {
 
@@ -18,12 +23,12 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    rules:{
+                    rules: {
                         required: true
                     },
                     valid: false,
                     touched: false,
-                    errorMessage:''
+                    errorMessage: ''
                 }
             },
             street: {
@@ -34,12 +39,12 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    rules:{
+                    rules: {
                         required: true
                     },
                     valid: false,
                     touched: false,
-                    errorMessage:''
+                    errorMessage: ''
                 }
             },
             zipCode: {
@@ -50,14 +55,14 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    rules:{
+                    rules: {
                         required: true,
                         minLength: 5,
                         maxLength: 5,
                     },
                     valid: false,
                     touched: false,
-                    errorMessage:''
+                    errorMessage: ''
                 }
             },
             country: {
@@ -68,12 +73,12 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    rules:{
+                    rules: {
                         required: true,
                     },
                     valid: false,
                     touched: false,
-                    errorMessage:''
+                    errorMessage: ''
                 }
             },
             email: {
@@ -84,12 +89,13 @@ class ContactData extends Component {
                 },
                 value: '',
                 validation: {
-                    rules:{
+                    rules: {
                         required: true,
+                        isEmail: true
                     },
                     valid: false,
                     touched: false,
-                    errorMessage:''
+                    errorMessage: ''
                 }
             },
             deliveryMethod: {
@@ -104,17 +110,16 @@ class ContactData extends Component {
                     ]
                 },
                 validation: {
-                    rules:{
+                    rules: {
                         invalidOption: '0',
                     },
                     valid: false,
                     touched: false,
-                    errorMessage:''
+                    errorMessage: ''
                 }
             },
         },
-        isValidForm: false,
-        loading: false
+        isValidForm: false
     };
 
     orderHandler = (event) => {
@@ -125,82 +130,30 @@ class ContactData extends Component {
             formData[elementIdentifier] = this.state.orderForm[elementIdentifier].value;
         }
         const order = {
-            ingredients: this.props.ingredients,
-            price: this.props.price,
-            orderData: formData
+            ingredients: this.props.ings,
+            price: this.props.price.toFixed(2),
+            orderData: formData,
+            userId: this.props.userId
         };
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({loading: false});
-                this.props.history.replace("/");
-            })
-            .catch(error => {
-                this.setState({loading: false});
-            });
+
+        this.props.onOrderBurger(order, this.props.token);
     };
 
-    static checkValidity(value, rules){
-        let isValid = true;
-
-
-        if(rules.required){
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if(rules.minlength){
-            isValid = value.length >= rules.minlength && isValid;
-        }
-
-        if(rules.maxLength){
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-
-        if(rules.invalidOption){
-            isValid = value.trim() !== rules.invalidOption && isValid;
-        }
-
-        return isValid;
-    }
-
-    static generateValidityMessage(value, rules, isValid){
-        let errorMessage = '';
-
-        if(rules.required && !isValid){
-            errorMessage = "This field is required";
-        }
-
-        if(rules.minlength){
-            errorMessage = `This field should have a minimum of ${rules.minlength} characters`;
-        }
-
-        if(rules.maxLength){
-            errorMessage = `This field should have a maximum of ${rules.maxLength} characters`;
-        }
-
-        if(rules.invalidOption){
-            errorMessage = "Please select a valid option";
-        }
-
-        return errorMessage;
-    }
-
-
-
     inputChangeHandler = (event, element) => {
-        const form = {
-            ...this.state.orderForm
-        };
-        const clonedElement = {
-            ...form[element]
-        };
 
-        clonedElement.value = event.target.value;
-        clonedElement.validation.valid = ContactData.checkValidity(clonedElement.value, clonedElement.validation.rules);
-        clonedElement.validation.errorMessage = ContactData.generateValidityMessage(clonedElement.value,
-            clonedElement.validation.rules,
-            clonedElement.validation.valid);
-        clonedElement.validation.touched = true;
-        form[element] = clonedElement;
+        const clonedElement = updateObject(this.state.orderForm[element], {
+            value: event.target.value,
+            validation: {
+                ...this.state.orderForm[element].validation,
+                valid: checkValidity(event.target.value, this.state.orderForm[element].validation.rules),
+                errorMessage: generateValidityMessage(event.target.value, this.state.orderForm[element].validation.rules,
+                    this.state.orderForm[element].validation.valid),
+                touched: true
+            }
+        });
+        const form = updateObject(this.state.orderForm, {
+            [element]: clonedElement
+        });
 
         let formValid = true;
         for (let property in form) {
@@ -232,17 +185,34 @@ class ContactData extends Component {
                         errorMessage={el.config.validation.errorMessage}
                         change={(event) => this.inputChangeHandler(event, el.id)}/>
                 ))}
-                <Button buttonType="Success" clicked={this.orderHandler} disabled={!this.state.isValidForm}>Order</Button>
+                <Button buttonType="Success" clicked={this.orderHandler}
+                        disabled={!this.state.isValidForm}>Order</Button>
             </form>
         );
 
         return (
             <div className={styles.ContactData}>
                 <h4>Enter your contact data</h4>
-                {this.state.loading ? <Spinner/> : form}
+                {this.props.loading ? <Spinner/> : form}
             </div>
         )
     }
 }
 
-export default ContactData
+const mapStateToProps = state => {
+    return {
+        ings: state.burger.ingredients,
+        price: state.burger.totalPrice,
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderBurger: (orderData, token) => dispatch(actions.purchaseBurger(orderData, token))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios))

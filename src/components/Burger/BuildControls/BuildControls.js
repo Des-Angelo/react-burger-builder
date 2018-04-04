@@ -1,6 +1,7 @@
 import React from 'react';
 import buildStyles from './BuildControls.css';
 import ControlUnit from './ControlUnit/ControlUnit';
+import button from "../../UI/Button/Button";
 
 const controls = [
     {label: 'Salad', type: 'salad'},
@@ -21,10 +22,10 @@ const buildControls = (props) => (
                 removed={() => props.ingredientRemoved(ctrl.type)}
                 disabled={props.disabled[ctrl.type]}/>
         ))}
-        <button
+            <button
             onClick={props.showSummary}
             className={buildStyles.OrderButton}
-            disabled={!props.canOrder}>Order Now</button>
+            disabled={!props.canOrder}>{props.authenticated ? "Order Now" : "Signup to Order"}</button>
     </div>
 );
 

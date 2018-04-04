@@ -10,7 +10,7 @@ const orderItem = (props) => {
         <div className={styles.OrderItem}>
             <h3>Order Details</h3>
             <Burger ingredients={props.order.ingredients}/>
-            <b>Price:</b> $ {props.order.price.toFixed(2)}
+            <b>Price:</b> $ {props.order.price}
         </div>
     )
 };
